@@ -51,15 +51,43 @@ namespace SimhashTests
         }
 
         [TestMethod]
-        public void test_value_by_string()
+        public void test_slide()
         {
-            var simHash = new Simhash("aaa bbb");
-            ulong expected = 8637903533912358349;
-            Assert.AreEqual(expected, simHash.value);
+            var simHash = new Simhash();
+            List<string> pieces = simHash.slide("aaabbb",width:4);
+            //aaab, aabb, abbb
+            Assert.AreEqual(3, pieces.Count);
         }
 
         [TestMethod]
-        public void test_value_by_collection()
+        public void test_clean()
+        {
+            var simHash = new Simhash();
+            string cleaned = simHash.scrub("aaa bbb test test testing. happy time =-).");
+            //aaab, aabb, abbb
+            Assert.AreEqual("aaabbbtesttesttestinghappytime", cleaned);
+        }
+
+        [TestMethod]
+        public void test_tokenize()
+        {
+            var simHash = new Simhash();
+            List<string> pieces = simHash.tokenize("aaabbb");
+            //aaab, aabb, abbb
+            Assert.AreEqual(3, pieces.Count);
+        }
+
+        [TestMethod]
+        public void test_value_by_string()
+        {
+            var simHash = new Simhash("aaa bbb test test testing. happy time =-).");
+            ulong expected = 5683413558821905382;
+            Assert.AreEqual(expected, simHash.value);
+        }
+
+        //Exact tests from https://github.com/liangsun/simhash
+        [TestMethod]
+        public void test_value()
         {
             List<string> features = new List<string>() { "aaa", "bbb" };
             var simHash = new Simhash(features);

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SimhashLib
 {
@@ -36,13 +37,33 @@ namespace SimhashLib
             build_by_features(shingles);
         }
 
-        private List<string> slide (string content)
+        public List<string> slide (string content, int width = 4)
         {
-            return null;
+            var listOfShingles = new List<string>();
+            for(int i=0;i<(content.Length + 1 - width);i++)
+            {             
+                string piece = content.Substring(i, width);
+                listOfShingles.Add(piece);
+            }
+            return listOfShingles;
         }
-        private List<string> tokenize(string content)
+        public string scrub(string content)
         {
-            return null;
+            MatchCollection matches = Regex.Matches(content, @"[\w\u4e00-\u9fcc]+");
+            string ans = "";
+            foreach (Match match in matches)
+            {
+                ans += match.Value;
+            }
+
+            return ans;
+
+        }
+        public List<string> tokenize(string content)
+        {
+            content = content.ToLower();
+            content = scrub(content);
+            return slide(content);
         }
         private void build_by_features(List<string> features)
         {
