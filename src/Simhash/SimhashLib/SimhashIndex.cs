@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SimhashLib
 {
-    class SimhashIndex
+    public class SimhashIndex
     {
+        public SimhashIndex(Dictionary<long,Simhash> objs,int k)
+        {
+
+        }
     }
 }
