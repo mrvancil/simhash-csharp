@@ -22,7 +22,28 @@ namespace SimhashLib
         {
             build_by_features(features);
         }
+        public Simhash(string content)
+        {
+            build_by_text(content);
+        }
+        public int distance(Simhash another)
+        {
+            return 0;
+        }
+        private void build_by_text(string content)
+        {
+            var shingles = tokenize(content);
+            build_by_features(shingles);
+        }
 
+        private List<string> slide (string content)
+        {
+            return null;
+        }
+        private List<string> tokenize(string content)
+        {
+            return null;
+        }
         private void build_by_features(List<string> features)
         {
             /*

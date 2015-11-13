@@ -51,12 +51,27 @@ namespace SimhashTests
         }
 
         [TestMethod]
-        public void test_value()
+        public void test_value_by_string()
+        {
+            var simHash = new Simhash("aaa bbb");
+            ulong expected = 8637903533912358349;
+            Assert.AreEqual(expected, simHash.value);
+        }
+
+        [TestMethod]
+        public void test_value_by_collection()
         {
             List<string> features = new List<string>() { "aaa", "bbb" };
             var simHash = new Simhash(features);
             ulong expected = 8637903533912358349;
             Assert.AreEqual(expected, simHash.value);
         }
+        //[TestMethod]
+        //public void test_distance()
+        //{
+        //    var sh = new Simhash("How are you? I AM fine. Thanks. And you?");
+        //    var sh2 = new Simhash("How old are you? :-) i am fine. Thanks. And you?");
+
+        //}
     }
 }
