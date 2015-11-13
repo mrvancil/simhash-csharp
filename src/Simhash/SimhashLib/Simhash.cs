@@ -47,17 +47,21 @@ namespace SimhashLib
                 }
             }
 
+            value = makeFingerprint(v, masks);
+        }
+
+        private ulong makeFingerprint(int[] v, ulong[] masks)
+        {
             ulong ans = 0;
-            //ulong uans = 0;
-            for (int i = 0; i<fpSize; i++)
+            for (int i = 0; i < fpSize; i++)
             {
                 if (v[i] >= 0)
                 {
                     ans |= masks[i];
                 }
             }
-            value = ans;
-         }
+            return ans;
+        }
 
         private int[] setupFingerprint()
         {
