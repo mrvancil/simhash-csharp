@@ -12,7 +12,7 @@ namespace SimhashLib
 {
     public class Simhash
     {
-        const int fpSize = 64;
+        public int fpSize = 64;
 
         public ulong value { get; set; }
         public Simhash()
@@ -25,15 +25,33 @@ namespace SimhashLib
         }
         public Simhash(string content)
         {
+            //convert to unicode? not sure if needed>>>>
+            //byte[] utf8Bytes = Encoding.Default.GetBytes(content);
+            //string unicodeValue = Encoding.Unicode.GetString(utf8Bytes);
+            //build_by_text(unicodeValue);
             build_by_text(content);
+        }
+
+        public Simhash(Simhash simHash)
+        {
+            value = simHash.value;
         }
         public int distance(Simhash another)
         {
-            return 0;
+            if (fpSize != another.fpSize) throw new Exception();
+            ulong x = (value ^ another.value) & (ulong.MaxValue);
+            int ans = 0;
+            while(x>0)
+            {
+                ans++;
+                x &= x - 1;
+            }
+            return ans;
         }
         private void build_by_text(string content)
         {
             var shingles = tokenize(content);
+            //grouped feature missing >>>>>>
             build_by_features(shingles);
         }
 
@@ -57,8 +75,8 @@ namespace SimhashLib
             }
 
             return ans;
-
         }
+
         public List<string> tokenize(string content)
         {
             content = content.ToLower();

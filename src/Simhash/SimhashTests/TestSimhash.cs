@@ -54,7 +54,7 @@ namespace SimhashTests
         public void test_slide()
         {
             var simHash = new Simhash();
-            List<string> pieces = simHash.slide("aaabbb",width:4);
+            List<string> pieces = simHash.slide("aaabbb", width: 4);
             //aaab, aabb, abbb
             Assert.AreEqual(3, pieces.Count);
         }
@@ -94,12 +94,57 @@ namespace SimhashTests
             ulong expected = 8637903533912358349;
             Assert.AreEqual(expected, simHash.value);
         }
-        //[TestMethod]
-        //public void test_distance()
-        //{
-        //    var sh = new Simhash("How are you? I AM fine. Thanks. And you?");
-        //    var sh2 = new Simhash("How old are you? :-) i am fine. Thanks. And you?");
+        [TestMethod]
+        public void test_distance()
+        {
+            var sh = new Simhash("How are you? I AM fine. Thanks. And you?");
+            var sh2 = new Simhash("How old are you? :-) i am fine. Thanks. And you?");
+            int distA = sh.distance(sh2);
+            Assert.IsTrue(distA > 0);
+            //Assert.AreEqual(8,distA);
 
-        //}
+            var sh3 = new Simhash(sh2);
+            int distB = sh2.distance(sh3);
+            Assert.AreEqual(0,distB);
+
+            Assert.AreNotEqual(0, new Simhash("1").distance(sh3));
+        }
+        [TestMethod]
+        public void test_chinese()
+        {
+            var sh = new Simhash("你好　世界！　　呼噜。");
+            var sh2 = new Simhash("你好，世界　呼噜");
+            Assert.AreEqual(sh.distance(sh2), 0);
+
+            var sh4 = new Simhash("How are you? I Am fine. ablar ablar xyz blar blar blar blar blar blar blar Thanks.");
+            var sh5 = new Simhash("How are you i am fine.ablar ablar xyz blar blar blar blar blar blar blar than");
+            var sh6 = new Simhash("How are you i am fine.ablar ablar xyz blar blar blar blar blar blar blar thank");
+
+            Assert.IsTrue(sh4.distance(sh6) < 3);
+            Assert.IsTrue(sh5.distance(sh6) < 3);
+        }
+
+        [TestMethod]
+        public void test_short()
+        {
+            List<Simhash> shs = new List<Simhash>();
+            List<string> ss = new List<string>() { "aa", "aaa", "aaaa", "aaaab", "aaaaabb", "aaaaabbb" };
+            foreach (string s in ss)
+            {
+                var simHash = new Simhash(s);
+                shs.Add(simHash);
+            }
+
+            foreach (Simhash sh1 in shs)
+            {
+                foreach (Simhash sh2 in shs)
+                {
+                    if (sh1 != sh2)
+                    {
+                        Assert.AreNotEqual(sh1, sh2);
+                    }
+                }
+            }
+        }
     }
 }
