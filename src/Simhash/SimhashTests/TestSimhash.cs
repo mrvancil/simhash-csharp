@@ -9,8 +9,6 @@ namespace SimhashTests
     [TestClass]
     public class TestSimhash
     {
-        
-
         [TestMethod]
         public void test_ulongtolongbacktoulong()
         {
@@ -20,15 +18,16 @@ namespace SimhashTests
             //save to mongo or other db using long (as ulong aren't!)
             //retrieve from db and then get back to ulong
             string sLong = Convert.ToString(cLong, 2);
-            ulong fromDb = Convert.ToUInt64(sLong,2);
+            ulong fromDb = Convert.ToUInt64(sLong, 2);
             string thedbUlong = Simhash.convert_ulong_to_bin(fromDb);
-            
+
             Assert.AreEqual(stheUlong, thedbUlong);
         }
+
+        [TestMethod]
         public void test_ulongtobinary()
         {
-            //ulong theUlong = 8637903533912358349;
-            ulong theUlong = 18446744073709551615;
+            ulong theUlong = 8637903533912358349;
             string stheUlong = Simhash.convert_ulong_to_bin(theUlong);
             string expSimHash = "111011111011111111111110111111110011110111011111111110111001101";
             Assert.AreEqual(expSimHash, stheUlong);
@@ -41,6 +40,7 @@ namespace SimhashTests
             string val = simHash.hashfunc_hashtostring("aaa");
             Assert.AreEqual(val, "47bce5c74f589f4867dbd57e9ca9f808");
         }
+
         [TestMethod]
         public void test_hashstringtobigint()
         {
@@ -56,8 +56,7 @@ namespace SimhashTests
             List<string> features = new List<string>() { "aaa", "bbb" };
             var simHash = new Simhash(features);
             ulong expected = 8637903533912358349;
-            Assert.AreEqual(expected,simHash.value );
+            Assert.AreEqual(expected, simHash.value);
         }
-
     }
 }
