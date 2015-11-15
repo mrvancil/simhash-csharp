@@ -23,8 +23,9 @@ namespace SimhashTests
             foreach(var it in data)
             {
                 objs.Add(it.Key, new Simhash(it.Value));
-                index = new SimhashIndex(objs:objs,k:10);
+                
             }
+            index = new SimhashIndex(objs: objs, k: 10);
 
         }
         [TestMethod]
@@ -46,6 +47,23 @@ namespace SimhashTests
             Assert.AreEqual(0, offsets[0]);
             Assert.AreEqual(42, offsets[2]);
             Assert.IsTrue(offsets.Count == 3);
+        }
+
+        [TestMethod]
+        public void test_get_keys()
+        {
+            Dictionary<long, string> testdata = new Dictionary<long, string>();
+            testdata.Add(1, "How are you? I Am fine. blar blar blar blar blar Thanks.");
+
+            Dictionary<long, Simhash> simHashObjs = new Dictionary<long, Simhash>();
+            foreach (var it in testdata)
+            {
+                simHashObjs.Add(it.Key, new Simhash(it.Value));
+            }
+            var simHashIndex = new SimhashIndex(objs: simHashObjs, k: 10);
+            var listOfKeys = simHashIndex.get_keys(simHashObjs[1]);
+            Assert.IsTrue(listOfKeys.Count == 11);
+
         }
 
         [Ignore]
