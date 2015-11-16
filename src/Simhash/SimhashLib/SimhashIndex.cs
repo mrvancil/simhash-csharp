@@ -36,8 +36,7 @@ namespace SimhashLib
             return a list of obj_id, which is in type of long (for now)
             */
             if (simhash.fpSize != this.fpSize) throw new Exception();
-
-
+            
             var ans = new HashSet<long>();
 
             foreach (string key in get_keys(simhash))
@@ -61,7 +60,7 @@ namespace SimhashLib
             }
             return ans;
         }
-        private void add(long obj_id, Simhash simhash)
+        public void add(long obj_id, Simhash simhash)
         {
             foreach (string key in get_keys(simhash))
             {
@@ -75,6 +74,18 @@ namespace SimhashLib
                 {
                     var values = bucket[key];
                     values.Add(v);
+                }
+            }
+        }
+
+        public void delete(long obj_id, Simhash simhash)
+        {
+            foreach (string key in get_keys(simhash))
+            {
+                string v = string.Format("{0},{1}", simhash.value, obj_id);
+                if (bucket.ContainsKey(key))
+                {
+                    bucket[key].Remove(v);
                 }
             }
         }

@@ -10,17 +10,16 @@ namespace SimhashTests
     {
         private Dictionary<long, Simhash> objs = new Dictionary<long, Simhash>();
         private SimhashIndex index;
-
+        private Dictionary<long, string> testData = new Dictionary<long, string>();
         [TestInitialize]
         public void setUp()
         {
-            Dictionary<long, string> data = new Dictionary<long, string>();
-            data.Add(1, "How are you? I Am fine. blar blar blar blar blar Thanks.");
-            data.Add(2, "How are you i am fine. blar blar blar blar blar than");
-            data.Add(3, "This is simhash test.");
-            data.Add(4, "How are you i am fine. blar blar blar blar blar thank1");
+            testData.Add(1, "How are you? I Am fine. blar blar blar blar blar Thanks.");
+            testData.Add(2, "How are you i am fine. blar blar blar blar blar than");
+            testData.Add(3, "This is simhash test.");
+            testData.Add(4, "How are you i am fine. blar blar blar blar blar thank1");
 
-            foreach(var it in data)
+            foreach(var it in testData)
             {
                 objs.Add(it.Key, new Simhash(it.Value));
                 
@@ -83,6 +82,25 @@ namespace SimhashTests
             var s1 = new Simhash("How are you i am fine.ablar ablar xyz blar blar blar blar blar blar blar thank");
             var dups = index.get_near_dups(s1);
             Assert.AreEqual(3, dups.Count);
+
+            index.delete(1, new Simhash(testData[1]));
+            dups = index.get_near_dups(s1);
+            Assert.AreEqual(2, dups.Count);
+
+            index.delete(1, new Simhash(testData[1]));
+            dups = index.get_near_dups(s1);
+            Assert.AreEqual(2, dups.Count);
+
+            index.add(1, new Simhash(testData[1]));
+            dups = index.get_near_dups(s1);
+            Assert.AreEqual(3, dups.Count);
+
+            index.add(1, new Simhash(testData[1]));
+            dups = index.get_near_dups(s1);
+            Assert.AreEqual(3, dups.Count);
+
         }
+
+
     }
 }
