@@ -98,9 +98,6 @@ namespace SimhashTests
             index.add(1, new Simhash(testData[1]));
             dups = index.get_near_dups(s1);
             Assert.AreEqual(3, dups.Count);
-
         }
-
-
     }
 }
