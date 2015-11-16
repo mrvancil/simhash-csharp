@@ -36,6 +36,10 @@ namespace SimhashLib
         {
             value = simHash.value;
         }
+        public Simhash(ulong fingerPrint)
+        {
+            value = fingerPrint;
+        }
         public int distance(Simhash another)
         {
             if (fpSize != another.fpSize) throw new Exception();

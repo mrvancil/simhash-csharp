@@ -61,18 +61,28 @@ namespace SimhashTests
                 simHashObjs.Add(it.Key, new Simhash(it.Value));
             }
             var simHashIndex = new SimhashIndex(objs: simHashObjs, k: 10);
-            var listOfKeys = simHashIndex.get_keys(simHashObjs[1]);
+            var listOfKeys = simHashIndex.get_the_keys(simHashObjs[1]);
             Assert.IsTrue(listOfKeys.Count == 11);
+            Assert.AreEqual("26,0", listOfKeys[0]);
+            Assert.AreEqual("3,1", listOfKeys[1]);
+            Assert.AreEqual("7,2", listOfKeys[2]);
+            Assert.AreEqual("12,3", listOfKeys[3]);
+            Assert.AreEqual("17,4", listOfKeys[4]);
+            Assert.AreEqual("0,5", listOfKeys[5]);
+            Assert.AreEqual("13,6", listOfKeys[6]);
+            Assert.AreEqual("30,7", listOfKeys[7]);
+            Assert.AreEqual("1,8", listOfKeys[8]);
+            Assert.AreEqual("14,9", listOfKeys[9]);
+            Assert.AreEqual("7496,10", listOfKeys[10]);
 
         }
 
-        [Ignore]
         [TestMethod]
         public void test_get_near_dup()
         {
             var s1 = new Simhash("How are you i am fine.ablar ablar xyz blar blar blar blar blar blar blar thank");
             var dups = index.get_near_dups(s1);
-            Assert.AreEqual(dups.Count, 3);
+            Assert.AreEqual(3, dups.Count);
         }
     }
 }
