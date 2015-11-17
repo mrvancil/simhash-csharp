@@ -81,11 +81,11 @@ namespace SimhashLib
             return ans;
         }
 
-        public List<string> tokenize(string content)
+        public List<string> tokenize(string content,int width = 4)
         {
             content = content.ToLower();
             content = scrub(content);
-            return slide(content);
+            return slide(content, width);
         }
         private void build_by_features(List<string> features)
         {

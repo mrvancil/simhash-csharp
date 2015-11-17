@@ -69,12 +69,20 @@ namespace SimhashTests
         }
 
         [TestMethod]
-        public void test_tokenize()
+        public void test_tokenize_width_default()
         {
             var simHash = new Simhash();
             List<string> pieces = simHash.tokenize("aaabbb");
             //aaab, aabb, abbb
             Assert.AreEqual(3, pieces.Count);
+        }
+        [TestMethod]
+        public void test_tokenize_width_three()
+        {
+            var simHash = new Simhash();
+            List<string> pieces = simHash.tokenize("This is a test for really cool content. yeah! =)", width:3);
+            //thi, his, isi, sis, isa .. etc....
+            Assert.AreEqual(33, pieces.Count);
         }
 
         [TestMethod]
