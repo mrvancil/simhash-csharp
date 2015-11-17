@@ -15,6 +15,7 @@ namespace SimhashLib
         public int fpSize = 64;
 
         public ulong value { get; set; }
+        
         public Simhash()
         {
         }
@@ -40,6 +41,19 @@ namespace SimhashLib
         {
             value = fingerPrint;
         }
+
+        public void GenerateSimhash(List<string> features)
+        {
+            build_by_features(features);
+        }
+
+        public long GetFingerprintAsLong()
+        {
+            string stheUlong = convert_ulong_to_bin(value);
+            long cLong = Convert.ToInt64(stheUlong, 2);
+            return cLong;
+        }
+        
         public int distance(Simhash another)
         {
             if (fpSize != another.fpSize) throw new Exception();
