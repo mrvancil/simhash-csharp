@@ -50,6 +50,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.HashFunction.Core, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.HashFunction.Core.1.8.2.0\lib\net45\System.Data.HashFunction.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.HashFunction.Interfaces.1.0.0.0\lib\net45\System.Data.HashFunction.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.Jenkins, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.HashFunction.Jenkins.1.8.2.0\lib\net45\System.Data.HashFunction.Jenkins.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -65,18 +77,7 @@
     <Compile Include="SimhashIndex.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Core\Data.HashFunction.Core.csproj">
-      <Project>{d8268071-2147-4364-9803-ed0921246899}</Project>
-      <Name>Data.HashFunction.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Interfaces\Data.HashFunction.Interfaces.csproj">
-      <Project>{fb16e5b0-d48f-4030-ab86-0cd00a029014}</Project>
-      <Name>Data.HashFunction.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Jenkins\Data.HashFunction.Jenkins.csproj">
-      <Project>{43f16b99-6f01-4fe8-b030-897cbae5a8df}</Project>
-      <Name>Data.HashFunction.Jenkins</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
