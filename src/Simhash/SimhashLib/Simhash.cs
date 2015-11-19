@@ -7,30 +7,27 @@ using System.Threading.Tasks;
 using System.Numerics;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Data.HashFunction;
 
 namespace SimhashLib
 {
+   
     public class Simhash
     {
+        public enum HashAlgorithm {
+            MD5,
+            CustomGetHashCode,
+            Jenkins
+        }
+
+        
+
         public int fpSize = 64;
 
         public ulong value { get; set; }
-        
+
         public Simhash()
         {
-        }
-
-        public Simhash(List<string> features)
-        {
-            build_by_features(features);
-        }
-        public Simhash(string content)
-        {
-            //convert to unicode? not sure if needed>>>>
-            //byte[] utf8Bytes = Encoding.Default.GetBytes(content);
-            //string unicodeValue = Encoding.Unicode.GetString(utf8Bytes);
-            //build_by_text(unicodeValue);
-            build_by_text(content);
         }
 
         public Simhash(Simhash simHash)
@@ -42,9 +39,34 @@ namespace SimhashLib
             value = fingerPrint;
         }
 
+        public void GenerateSimhash(string content)
+        {
+            var shingling = new Shingling();
+            var shingles = shingling.tokenize(content);
+            GenerateSimhash(shingles);
+        }
+
+        //playing around with hashing algorithms. turns out md5 is a touch slow.
+        private HashAlgorithm hashAlgorithm = HashAlgorithm.Jenkins;
+
         public void GenerateSimhash(List<string> features)
         {
-            build_by_features(features);
+            switch(hashAlgorithm)
+            {
+                case HashAlgorithm.MD5:
+                    build_by_features_md5(features);
+                    break;
+                case HashAlgorithm.CustomGetHashCode:
+                    build_by_features_customgethashcode(features);
+                    break;
+                case HashAlgorithm.Jenkins:
+                    build_by_features_jenkins(features);
+                    break;
+                default:
+                    build_by_features_md5(features);
+                    break;
+
+            }
         }
 
         public long GetFingerprintAsLong()
@@ -53,74 +75,72 @@ namespace SimhashLib
             long cLong = Convert.ToInt64(stheUlong, 2);
             return cLong;
         }
-        
+
         public int distance(Simhash another)
         {
             if (fpSize != another.fpSize) throw new Exception();
             ulong x = (value ^ another.value) & (ulong.MaxValue);
             int ans = 0;
-            while(x>0)
+            while (x > 0)
             {
                 ans++;
                 x &= x - 1;
             }
             return ans;
         }
-        private void build_by_text(string content)
+       
+        private void build_by_features_md5(List<string> features)
         {
-            var shingles = tokenize(content);
-            //grouped feature missing >>>>>>
-            build_by_features(shingles);
-        }
-
-        public List<string> slide (string content, int width = 4)
-        {
-            var listOfShingles = new List<string>();
-            for(int i=0;i<(content.Length + 1 - width);i++)
-            {             
-                string piece = content.Substring(i, width);
-                listOfShingles.Add(piece);
-            }
-            return listOfShingles;
-        }
-        public string scrub(string content)
-        {
-            MatchCollection matches = Regex.Matches(content, @"[\w\u4e00-\u9fcc]+");
-            string ans = "";
-            foreach (Match match in matches)
-            {
-                ans += match.Value;
-            }
-
-            return ans;
-        }
-
-        public List<string> tokenize(string content,int width = 4)
-        {
-            content = content.ToLower();
-            content = scrub(content);
-            return slide(content, width);
-        }
-        private void build_by_features(List<string> features)
-        {
-            /*
-                "features" might be a list of unweighted tokens(a weight of 1
-                will be assumed), a list of(token, weight) tuples or
-                a token -> weight dict.
-            */
-
             int[] v = setupFingerprint();
             ulong[] masks = setupMasks();
 
             foreach (string feature in features)
             {
-                BigInteger h = hashfunc(feature);
+                //this is using MD5 which is REALLY slow
+                BigInteger h = hashfuncmd5(feature);
                 int w = 1;
                 for (int i = 0; i < fpSize; i++)
                 {
                     //convert to BigInt so we can use BitWise
                     BigInteger bMask = masks[i];
                     BigInteger result = h & bMask;
+                    v[i] += (result > 0) ? w : -w;
+                }
+            }
+
+            value = makeFingerprint(v, masks);
+        }
+               
+        private void build_by_features_customgethashcode(List<string> features)
+        {
+            int[] v = setupFingerprint();
+            ulong[] masks = setupMasks();
+
+            foreach (string feature in features)
+            {
+                ulong h = hashfunccustom(feature);
+                int w = 1;
+                for (int i = 0; i < fpSize; i++)
+                {
+                    ulong result = h & masks[i];
+                    v[i] += (result > 0) ? w : -w;
+                }
+            }
+
+            value = makeFingerprint(v, masks);
+        }
+        private void build_by_features_jenkins(List<string> features)
+        {
+            int[] v = setupFingerprint();
+            ulong[] masks = setupMasks();
+
+            foreach (string feature in features)
+            {
+                ulong h = hashfunccustom(feature);
+                int w = 1;
+                for (int i = 0; i < fpSize; i++)
+                {
+                    ulong result = h & masks[i];
                     v[i] += (result > 0) ? w : -w;
                 }
             }
@@ -158,7 +178,7 @@ namespace SimhashLib
             return masks;
         }
 
-        private BigInteger hashfunc(string x)
+        private BigInteger hashfuncmd5(string x)
         {
             string hexValue = hashfunc_hashtostring(x);
             BigInteger b = hashfunc_hashstringtobignasty(hexValue);
@@ -170,14 +190,33 @@ namespace SimhashLib
             {
                 byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(x));
 
-                StringBuilder sBuilder = new StringBuilder();
+                string returnString = "";
                 for (int i = 0; i < data.Length; i++)
                 {
-                    sBuilder.Append(data[i].ToString("x2"));
+                    returnString += data[i].ToString("x2");
                 }
-                return sBuilder.ToString();
+                return returnString;
             }
         }
+        public ulong hashfunccustom(string x)
+        {
+            var s1 = x.Substring(0, x.Length / 2);
+            var s2 = x.Substring(x.Length / 2);
+
+            var y = ((ulong)s1.GetHashCode()) << 0x20 | ((uint)s2.GetHashCode());
+
+            return y;
+        }
+        public ulong hashfuncjenkins(string x)
+        {
+            var jenkinsLookup3 = new JenkinsLookup3(64);
+            var resultBytes = jenkinsLookup3.ComputeHash(x);
+
+            var y = BitConverter.ToUInt64(resultBytes,0);
+
+            return y;
+        }
+
         public BigInteger hashfunc_hashstringtobignasty(string x)
         {
             BigInteger bigNumber = BigInteger.Parse(x, NumberStyles.AllowHexSpecifier);

@@ -29,6 +29,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -41,9 +59,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shingling.cs" />
     <Compile Include="Simhash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimhashIndex.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Core\Data.HashFunction.Core.csproj">
+      <Project>{d8268071-2147-4364-9803-ed0921246899}</Project>
+      <Name>Data.HashFunction.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Interfaces\Data.HashFunction.Interfaces.csproj">
+      <Project>{fb16e5b0-d48f-4030-ab86-0cd00a029014}</Project>
+      <Name>Data.HashFunction.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Data.HashFunction\src\Jenkins\Data.HashFunction.Jenkins.csproj">
+      <Project>{43f16b99-6f01-4fe8-b030-897cbae5a8df}</Project>
+      <Name>Data.HashFunction.Jenkins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
