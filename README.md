@@ -3,8 +3,8 @@ simhash-csharp
 This is a C# port of a very clear and concise simhash implementation in python 
 (also on github at https://github.com/liangsun/simhash).  I have ported most all 
 of the tests as well, adding a couple of other along the way. The port is pretty 
-close but I have divered from the overloading of the class and implemented Methods
-because I prefer this approach.
+close but I have diverged from the overloading of the class and implemented methods
+for calculation because I prefer this approach.
 
 ## Getting Started 
 
@@ -21,9 +21,9 @@ Currently there are no known issues.
 
 ## Performance Optimization
 
-Since some of the types from python to C# are exactly the same, performance might differ.  I
-will be sending the C# code through a variety of a/b tests in the near future and will 
-make sure to push those finding into the repository as needed.
+Since some of the types from python to C# not are exactly the same (HoneyBadger don't care
+you got a huge number!) there might be some speed loss/improvements depending on how
+I implemented the native types in C#.
 
 With Jenkins as the hashing algorithm, it takes roughly 2 minutes (on a smallish laptop)
 to generate fingerprints for 11,000 full text articles.
