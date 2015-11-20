@@ -12,6 +12,7 @@ namespace SimhashLib
         public Dictionary<string, HashSet<string>> bucket;
         public static List<int> offsets;
 
+        //whitepaper says 64 and 3 are optimal. the ash tray says you've been up all night...
         public SimhashIndex(Dictionary<long, Simhash> objs, int f = 64, int k = 3)
         {
             this.kDistance = k;
@@ -94,6 +95,7 @@ namespace SimhashLib
             You may optimize this method according to < http://www.wwwconference.org/www2007/papers/paper215.pdf>
             */
             //int optimizedSize = 4; replace kDistance with this var.
+            //
             var ans = new List<int>();
             for (int i = 0; i < (kDistance + 1); i++)
             {
