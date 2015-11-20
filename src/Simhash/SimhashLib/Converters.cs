@@ -49,12 +49,5 @@ namespace SimhashLib
 
             return cLong;
         }
-
-        public static ulong ConvertLongToUlong(long value)
-        {
-            string sLong = Convert.ToString(value, 2);
-            ulong fromDb = Convert.ToUInt64(sLong, 2);
-            return fromDb;
-        }
     }
 }

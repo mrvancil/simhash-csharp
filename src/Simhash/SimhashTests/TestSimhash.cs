@@ -11,26 +11,6 @@ namespace SimhashTests
     [TestClass]
     public class TestSimhash
     {
-
-
-        [TestMethod]
-        public void test_hashtostringvalue()
-        {
-            var simHash = new Simhash();
-            string val = simHash.hashfunc_hashtostring("aaa");
-            Assert.AreEqual(val, "47bce5c74f589f4867dbd57e9ca9f808");
-        }
-       
-        [TestMethod]
-        public void test_hashstringtobigint()
-        {
-            var simHash = new Simhash();
-            BigInteger actualBiggie = simHash.hashfunc_hashstringtobignasty("47bce5c74f589f4867dbd57e9ca9f808");
-            string expectedBiggie = "95355999972893604581396806948474189832";
-            Assert.AreEqual(expectedBiggie, actualBiggie.ToString());
-        }
-
-
         //only works with md5 hashing
         [TestMethod]
         public void test_value_by_string()
@@ -42,7 +22,6 @@ namespace SimhashTests
         }
 
         //Exact tests from https://github.com/liangsun/simhash
-        //only works with md5 hashing
         [TestMethod]
         public void test_value()
         {
@@ -53,7 +32,6 @@ namespace SimhashTests
             Assert.AreEqual(expected, simHash.value);
         }
         
-        //only works with md5 hashing
         [TestMethod]
         public void test_value_control()
         {
@@ -73,7 +51,6 @@ namespace SimhashTests
             sh2.GenerateSimhash("How old are you? :-) i am fine. Thanks. And you?");
             int distA = sh.distance(sh2);
             Assert.IsTrue(distA > 0);
-            //Assert.AreEqual(8,distA);
 
             var sh3 = new Simhash(sh2);
             int distB = sh2.distance(sh3);

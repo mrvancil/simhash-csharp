@@ -39,7 +39,6 @@ namespace SimhashTests
         {
             var shingling = new Shingling();
             string cleaned = shingling.scrub("aaa bbb test test testing. happy time =-).");
-            //aaab, aabb, abbb
             Assert.AreEqual("aaabbbtesttesttestinghappytime", cleaned);
         }
     }

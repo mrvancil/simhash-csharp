@@ -29,7 +29,7 @@ namespace SimhashTests
         {
             ulong theUlong = 18446744073709551615;
             long cLong = Converters.ConvertUlongToLong(theUlong);
-            //save to mongo or other db using long (as ulong aren't!)
+            //save to mongo/sql/etc (ulong's not accepted as valid payment at all locations)
 
             //retrieve from db and then get back to ulong
             string sLong = Convert.ToString(cLong, 2);

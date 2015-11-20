@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimhashLib
 {
     public class SimhashIndex
     {
-        public int kDistance;
-        public int fpSize = 64;
         public static int fpSizeStatic = 64;
+        public int kDistance;
+        public int fpSize = fpSizeStatic;
         public Dictionary<string, HashSet<string>> bucket;
         public static List<int> offsets;
 
-        public SimhashIndex(Dictionary<long, Simhash> objs, int f = 64, int k = 2)
+        public SimhashIndex(Dictionary<long, Simhash> objs, int f = 64, int k = 3)
         {
             this.kDistance = k;
             this.fpSize = f;
@@ -27,8 +25,8 @@ namespace SimhashLib
             {
                 add(q.Key, q.Value);
             }
-
         }
+
         public HashSet<long> get_near_dups(Simhash simhash)
         {
             /*
@@ -95,6 +93,7 @@ namespace SimhashLib
             /*
             You may optimize this method according to < http://www.wwwconference.org/www2007/papers/paper215.pdf>
             */
+            //int optimizedSize = 4; replace kDistance with this var.
             var ans = new List<int>();
             for (int i = 0; i < (kDistance + 1); i++)
             {
@@ -125,15 +124,10 @@ namespace SimhashLib
                 double m = (Math.Pow(2, off)) - 1;
                 ulong m64 = Convert.ToUInt64(m);
                 ulong offset64 = Convert.ToUInt64(offsets[i]);
-                //0,31,26L
                 ulong c = simhash.value >> offsets[i] & m64;
 
                 yield return string.Format("{0},{1}", c, i);
             }
         }
-
-
-
-
     }
 }

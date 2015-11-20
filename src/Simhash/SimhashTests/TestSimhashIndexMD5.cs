@@ -50,7 +50,6 @@ namespace SimhashTests
             Assert.IsTrue(offsets.Count == 3);
         }
 
-        //only works with md5 hashing
         [TestMethod]
         public void test_get_keys()
         {
