@@ -73,9 +73,11 @@
   <ItemGroup>
     <Compile Include="TestSimhash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestSimhashIndex.cs" />
+    <Compile Include="TestSimhashIndexJenkins.cs" />
+    <Compile Include="TestSimhashIndexMD5.cs" />
     <Compile Include="TestHashing.cs" />
     <Compile Include="TestShingling.cs" />
+    <Compile Include="TestConverters.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimhashLib\SimhashLib.csproj">

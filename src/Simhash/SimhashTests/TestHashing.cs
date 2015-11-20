@@ -8,7 +8,7 @@ namespace SimhashTests
     public class TestHashing
     {
         [TestMethod]
-        public void LearnAboutGetHashCode1()
+        public void test_gethashcode_asstring()
         {
 
             string aaa = "aaa";
@@ -18,7 +18,7 @@ namespace SimhashTests
             Assert.AreEqual("-625742108", hashString);
         }
         [TestMethod]
-        public void LearnAboutGetHashCode2()
+        public void test_gethashcode_asint()
         {
 
             string aaa = "aaa";
@@ -26,12 +26,12 @@ namespace SimhashTests
             Assert.AreEqual(-625742108, hash);
         }
         [TestMethod]
-        public void LearnAboutGetHashCode3()
+        public void test_gethashcode_specialhashing_to64bit()
         {
             string eval = "aaa";
             var simHash = new Simhash();
-            ulong fromDb = simHash.hashfunccustom(eval);
-            Assert.AreEqual(14828866757492062143, fromDb);
+            ulong fromDb = simHash.hashfuncjenkins(eval);
+            Assert.AreEqual(18323053351575752945, fromDb);
         }
     }
 }

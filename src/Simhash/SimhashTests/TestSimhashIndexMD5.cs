@@ -6,7 +6,7 @@ using SimhashLib;
 namespace SimhashTests
 {
     [TestClass]
-    public class TestSimhashIndex
+    public class TestSimhashIndexMD5
     {
         private Dictionary<long, Simhash> objs = new Dictionary<long, Simhash>();
         private SimhashIndex index;
@@ -21,7 +21,7 @@ namespace SimhashTests
 
             foreach(var it in testData)
             {
-                var simHash = new Simhash();
+                var simHash = new Simhash(hashingType:Simhash.HashingType.MD5);
                 simHash.GenerateSimhash(it.Value);
                 objs.Add(it.Key, simHash);
                 
@@ -51,7 +51,6 @@ namespace SimhashTests
         }
 
         //only works with md5 hashing
-        [Ignore]
         [TestMethod]
         public void test_get_keys()
         {
@@ -61,7 +60,7 @@ namespace SimhashTests
             Dictionary<long, Simhash> simHashObjs = new Dictionary<long, Simhash>();
             foreach (var it in testdata)
             {
-                var simHash = new Simhash();
+                var simHash = new Simhash(hashingType:Simhash.HashingType.MD5);
                 simHash.GenerateSimhash(it.Value);
                 simHashObjs.Add(it.Key, simHash);
             }
@@ -85,30 +84,30 @@ namespace SimhashTests
         [TestMethod]
         public void test_get_near_dup_hash()
         {
-            var s1 = new Simhash();
+            var s1 = new Simhash(hashingType: Simhash.HashingType.MD5);
             s1.GenerateSimhash("How are you i am fine.ablar ablar xyz blar blar blar blar blar blar blar thank");
             var dups = index.get_near_dups(s1);
             Assert.AreEqual(3, dups.Count);
 
-            var s2 = new Simhash();
+            var s2 = new Simhash(hashingType: Simhash.HashingType.MD5);
             s2.GenerateSimhash(testData[1]);
             index.delete(1, s2);
             dups = index.get_near_dups(s1);
             Assert.AreEqual(2, dups.Count);
 
-            var s3 = new Simhash();
+            var s3 = new Simhash(hashingType: Simhash.HashingType.MD5);
             s3.GenerateSimhash(testData[1]);
             index.delete(1, s3);
             dups = index.get_near_dups(s1);
             Assert.AreEqual(2, dups.Count);
 
-            var s4 = new Simhash();
+            var s4 = new Simhash(hashingType: Simhash.HashingType.MD5);
             s4.GenerateSimhash(testData[1]);
             index.add(1, s4);
             dups = index.get_near_dups(s1);
             Assert.AreEqual(3, dups.Count);
 
-            var s5 = new Simhash();
+            var s5 = new Simhash(hashingType: Simhash.HashingType.MD5);
             s5.GenerateSimhash(testData[1]);
             index.add(1, s5);
             dups = index.get_near_dups(s1);

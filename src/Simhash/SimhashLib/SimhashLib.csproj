@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters.cs" />
     <Compile Include="Shingling.cs" />
     <Compile Include="Simhash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

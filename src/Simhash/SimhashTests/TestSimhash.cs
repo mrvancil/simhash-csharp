@@ -11,29 +11,7 @@ namespace SimhashTests
     [TestClass]
     public class TestSimhash
     {
-        [TestMethod]
-        public void test_ulongtolongbacktoulong()
-        {
-            ulong theUlong = 18446744073709551615;
-            string stheUlong = Simhash.convert_ulong_to_bin(theUlong);
-            long cLong = Convert.ToInt64(stheUlong, 2);
-            //save to mongo or other db using long (as ulong aren't!)
-            //retrieve from db and then get back to ulong
-            string sLong = Convert.ToString(cLong, 2);
-            ulong fromDb = Convert.ToUInt64(sLong, 2);
-            string thedbUlong = Simhash.convert_ulong_to_bin(fromDb);
 
-            Assert.AreEqual(stheUlong, thedbUlong);
-        }
-
-        [TestMethod]
-        public void test_ulongtobinary()
-        {
-            ulong theUlong = 8637903533912358349;
-            string stheUlong = Simhash.convert_ulong_to_bin(theUlong);
-            string expSimHash = "111011111011111111111110111111110011110111011111111110111001101";
-            Assert.AreEqual(expSimHash, stheUlong);
-        }
 
         [TestMethod]
         public void test_hashtostringvalue()
@@ -54,11 +32,10 @@ namespace SimhashTests
 
 
         //only works with md5 hashing
-        [Ignore]
         [TestMethod]
         public void test_value_by_string()
         {
-            var simHash = new Simhash();
+            var simHash = new Simhash(hashingType:Simhash.HashingType.MD5);
             simHash.GenerateSimhash("aaa bbb test test testing.happy time = -).");
             ulong expected = 5683413558821905382;
             Assert.AreEqual(expected, simHash.value);
@@ -66,24 +43,22 @@ namespace SimhashTests
 
         //Exact tests from https://github.com/liangsun/simhash
         //only works with md5 hashing
-        [Ignore]
         [TestMethod]
         public void test_value()
         {
             List<string> features = new List<string>() { "aaa", "bbb" };
-            var simHash = new Simhash();
+            var simHash = new Simhash(hashingType:Simhash.HashingType.MD5);
             simHash.GenerateSimhash(features);
             ulong expected = 8637903533912358349;
             Assert.AreEqual(expected, simHash.value);
         }
         
         //only works with md5 hashing
-        [Ignore]
         [TestMethod]
         public void test_value_control()
         {
             List<string> features = new List<string>() { "aaa" };
-            var simHash = new Simhash();
+            var simHash = new Simhash(hashingType:Simhash.HashingType.MD5);
             simHash.GenerateSimhash(features);
             ulong expected = 7483809945577191432;
             Assert.AreEqual(expected, simHash.value);

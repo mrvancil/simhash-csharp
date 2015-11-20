@@ -14,20 +14,20 @@ namespace SimhashLib
    
     public class Simhash
     {
-        public enum HashAlgorithm {
+        public enum HashingType {
             MD5,
-            CustomGetHashCode,
             Jenkins
         }
-
-        
-
         public int fpSize = 64;
 
         public ulong value { get; set; }
 
         public Simhash()
         {
+        }
+        public Simhash(HashingType hashingType)
+        {
+            hashAlgorithm = hashingType;
         }
 
         public Simhash(Simhash simHash)
@@ -47,19 +47,16 @@ namespace SimhashLib
         }
 
         //playing around with hashing algorithms. turns out md5 is a touch slow.
-        private HashAlgorithm hashAlgorithm = HashAlgorithm.Jenkins;
+        private HashingType hashAlgorithm = HashingType.Jenkins;
 
         public void GenerateSimhash(List<string> features)
         {
             switch(hashAlgorithm)
             {
-                case HashAlgorithm.MD5:
+                case HashingType.MD5:
                     build_by_features_md5(features);
                     break;
-                case HashAlgorithm.CustomGetHashCode:
-                    build_by_features_customgethashcode(features);
-                    break;
-                case HashAlgorithm.Jenkins:
+                case HashingType.Jenkins:
                     build_by_features_jenkins(features);
                     break;
                 default:
@@ -71,9 +68,7 @@ namespace SimhashLib
 
         public long GetFingerprintAsLong()
         {
-            string stheUlong = convert_ulong_to_bin(value);
-            long cLong = Convert.ToInt64(stheUlong, 2);
-            return cLong;
+            return Converters.ConvertUlongToLong(value);
         }
 
         public int distance(Simhash another)
@@ -110,25 +105,7 @@ namespace SimhashLib
 
             value = makeFingerprint(v, masks);
         }
-               
-        private void build_by_features_customgethashcode(List<string> features)
-        {
-            int[] v = setupFingerprint();
-            ulong[] masks = setupMasks();
 
-            foreach (string feature in features)
-            {
-                ulong h = hashfunccustom(feature);
-                int w = 1;
-                for (int i = 0; i < fpSize; i++)
-                {
-                    ulong result = h & masks[i];
-                    v[i] += (result > 0) ? w : -w;
-                }
-            }
-
-            value = makeFingerprint(v, masks);
-        }
         private void build_by_features_jenkins(List<string> features)
         {
             int[] v = setupFingerprint();
@@ -136,7 +113,7 @@ namespace SimhashLib
 
             foreach (string feature in features)
             {
-                ulong h = hashfunccustom(feature);
+                ulong h = hashfuncjenkins(feature);
                 int w = 1;
                 for (int i = 0; i < fpSize; i++)
                 {
@@ -198,15 +175,6 @@ namespace SimhashLib
                 return returnString;
             }
         }
-        public ulong hashfunccustom(string x)
-        {
-            var s1 = x.Substring(0, x.Length / 2);
-            var s2 = x.Substring(x.Length / 2);
-
-            var y = ((ulong)s1.GetHashCode()) << 0x20 | ((uint)s2.GetHashCode());
-
-            return y;
-        }
         public ulong hashfuncjenkins(string x)
         {
             var jenkinsLookup3 = new JenkinsLookup3(64);
@@ -223,16 +191,6 @@ namespace SimhashLib
             return bigNumber;
         }
 
-        public static string convert_ulong_to_bin(ulong value)
-        {
-            if (value == 0) return "0";
-            System.Text.StringBuilder b = new System.Text.StringBuilder();
-            while (value != 0)
-            {
-                b.Insert(0, ((value & 1) == 1) ? '1' : '0');
-                value >>= 1;
-            }
-            return b.ToString();
-        }
+       
     }
 }
